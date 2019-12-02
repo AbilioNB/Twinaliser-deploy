@@ -2,21 +2,19 @@ import os
 import re
 import tweepy
 import preprocessor
-from dotenv import load_dotenv
 from mtranslate import translate
 from textblob import TextBlob
 from flask import Flask, render_template, request, send_from_directory
 
-load_dotenv()
 app = Flask(__name__)
 
 
 class TwitterClient():
     def __init__(self):
-        consumer_key = os.getenv('CONSUMER_KEY')
-        consumer_secret = os.getenv('CONSUMER_SECRET')
-        access_token = os.getenv('ACCESS_TOKEN')
-        access_token_secret = os.getenv('ACCESS_TOKEN_SECRET')
+        consumer_key = os.environ.get('CONSUMER_KEY')
+        consumer_secret = os.environ.get('CONSUMER_SECRET')
+        access_token = os.environ.get('ACCESS_TOKEN')
+        access_token_secret = os.environ.get('ACCESS_TOKEN_SECRET')
 
         try:
             self.auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -114,4 +112,5 @@ def favicon():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int (os.environ.get("PORT",5000))
+    app.run(host='0.0.0.0',port=port)
